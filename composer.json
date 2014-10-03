@@ -5,8 +5,8 @@
     "keywords": ["yii2", "colorpicker", "Widget"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/cliff363825/colorpicker/issues",
-        "source": "https://github.com/cliff363825/colorpicker"
+        "issues": "https://github.com/cliff363825/yii2-colorpicker/issues",
+        "source": "https://github.com/cliff363825/yii2-colorpicker"
     },
     "authors": [
         {
