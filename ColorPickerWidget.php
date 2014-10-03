@@ -2,39 +2,13 @@
 
 namespace cliff363825\colorpicker;
 
-use yii\base\Widget;
+use yii\widgets\InputWidget;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\JsExpression;
 
-class ColorPickerWidget extends Widget
+class ColorPickerWidget extends InputWidget
 {
-    /**
-     * @var \yii\db\ActiveRecord
-     */
-    public $model;
-
-    /**
-     * @var string
-     */
-    public $attribute;
-
-    /**
-     * @var string
-     */
-    public $name;
-
-    /**
-     * @var string
-     */
-    public $value;
-
-    /**
-     * Html Options
-     * @var array
-     */
-    public $options = [];
-
     /**
      * Widget Options
      * @var array
@@ -46,17 +20,8 @@ class ColorPickerWidget extends Widget
      */
     public $render = true;
 
-    public function init()
-    {
-        parent::init();
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
-    }
-
     public function run()
     {
-        $this->registerClientScript();
         if ($this->render) {
             if ($this->hasModel()) {
                 echo Html::activeTextInput($this->model, $this->attribute, $this->options);
@@ -64,23 +29,24 @@ class ColorPickerWidget extends Widget
                 echo Html::textInput($this->name, $this->value, $this->options);
             }
         }
+        $this->registerClientScript();
     }
 
-    protected function registerClientScript()
+    public function registerClientScript()
     {
         $view = $this->getView();
-        ColorPickerAsset::register($view);
-        $options = $this->getClientOptions();
-        $options_str = Json::encode($options);
+        $this->initClientOptions();
+        $id = $this->options['id'];
         $js = "
 jQuery(function(){
-    jQuery('#{$this->options['id']}').colorPicker({$options_str});
+    jQuery('#{$id}').colorPicker(" . Json::encode($this->clientOptions) . ");
 });
 ";
+        ColorPickerAsset::register($view);
         $view->registerJs($js);
     }
 
-    protected function getClientOptions()
+    protected function initClientOptions()
     {
         // ColorPicker optional params
         $params = [
@@ -101,11 +67,6 @@ function(id, newValue) {
                 $options[$key] = $this->clientOptions[$key];
             }
         }
-        return $options;
-    }
-
-    protected function hasModel()
-    {
-        return $this->model !== null && $this->model instanceof \yii\db\ActiveRecord;
+        $this->clientOptions = $options;
     }
 }
