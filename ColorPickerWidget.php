@@ -2,10 +2,10 @@
 
 namespace cliff363825\colorpicker;
 
-use yii\widgets\InputWidget;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\JsExpression;
+use yii\widgets\InputWidget;
 
 class ColorPickerWidget extends InputWidget
 {
